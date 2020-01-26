@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Header from './components/Header'
+import Header from './components/Header';
+import TodoItem from './components/TodoItem';
+import AddTodo from './components/AddTodo';
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -15,16 +17,32 @@ export default function App() {
     { text: 'play on the switch', key: '3' }
   ]);
 
+  const pressHandler = keyPressed => {
+    setTodos(prevState => {
+      return prevState.filter(({ key }) => key !== keyPressed)
+    })
+  }
+
+  const addTodoHandler = text => {
+    const key = (todos.length + 1).toString();
+    setTodos(prevState => {
+      return [
+        { text, key },
+        ...prevState,
+      ]
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        { /* to form */ }
+        <AddTodo submitHandler={addTodoHandler} />
         <View style={styles.list}>
           <FlatList
             data={todos}
-            renderItem={({ item: { text } }) => (
-              <Text>{text}</Text>
+            renderItem={({ item }) => (
+              <TodoItem item={item} pressHandler={pressHandler} />
             )}
             />
         </View>
