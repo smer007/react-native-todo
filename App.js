@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import {
   Alert,
   FlatList,
+  Keyboard,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View
 } from 'react-native';
 import Header from './components/Header';
@@ -29,7 +30,7 @@ export default function App() {
       Alert.alert('Oops!', 'Todos must be over 3 chars long', [
         {text: 'Got it'}
       ]);
-      
+
       return;
     }
     const key = (todos.length + 1).toString();
@@ -42,20 +43,24 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Header />
-      <View style={styles.content}>
-        <AddTodo submitHandler={addTodoHandler} />
-        <View style={styles.list}>
-          <FlatList
-            data={todos}
-            renderItem={({ item }) => (
-              <TodoItem item={item} pressHandler={pressHandler} />
-            )}
-            />
+    <TouchableWithoutFeedback onPress={() => {
+      Keyboard.dismiss();
+    }}>
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.content}>
+          <AddTodo submitHandler={addTodoHandler} />
+          <View style={styles.list}>
+            <FlatList
+              data={todos}
+              renderItem={({ item }) => (
+                <TodoItem item={item} pressHandler={pressHandler} />
+              )}
+              />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
