@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -24,6 +25,13 @@ export default function App() {
   }
 
   const addTodoHandler = text => {
+    if(text.length <= 3) {
+      Alert.alert('Oops!', 'Todos must be over 3 chars long', [
+        {text: 'Got it'}
+      ]);
+      
+      return;
+    }
     const key = (todos.length + 1).toString();
     setTodos(prevState => {
       return [
