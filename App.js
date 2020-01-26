@@ -3,6 +3,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 
@@ -17,7 +18,11 @@ export default function App() {
     { name: 'bowser', id: '7' },
   ]);
 
-
+  const pressHandler = id => {
+    setPeople(prevState => {
+      return prevState.filter(({id: originalId}) => originalId !== id)
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -25,8 +30,10 @@ export default function App() {
         data ={people}
         keyExtractor={item => item.id}
         numColumns={2}
-        renderItem={({ item }) => (
-          <Text style={styles.item}>{item.name}</Text>
+        renderItem={({ item: {id, name} }) => (
+          <TouchableOpacity onPress={() => pressHandler(id)}>
+            <Text style={styles.item}>{name}</Text>
+          </TouchableOpacity>
         )}
         />
     </View>
